@@ -5,6 +5,7 @@ import connectMongoDb from "./db/connectMongoDb.js";
 import cookieParser from "cookie-parser";
 import userRoutes from "./Routes/user-routes.js";
 import {v2 as cloudinary} from "cloudinary";
+import postRoutes from "./Routes/post-routes.js";
 dotenv.config();
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -19,6 +20,7 @@ app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 app.use("/api/auth",authRoutes);
 app.use("/api/user",userRoutes);
+app.use("/api/posts",postRoutes);
 
 app.listen(PORT,()=>{
     console.log(`server running on port ${PORT}`);

@@ -60,30 +60,31 @@ export const signup = async (req, res) => {
 };
 
 export const login=async  (req,res)=>{
-    try{
-         const {username,password}=req.body;
-		 const newUser=await User.findOne({username});
-		 const isPasswordCorrect = await bcrypt.compare(password,newUser?.password || "")
-		 if( !newUser || !isPasswordCorrect){
-			return res.status(400).json({ error: "Invalid username or password",username,isPasswordCorrect });
-		 }
+	try{
+		const {username,password}=req.body;
+		const newUser=await User.findOne({username});
 		
-		 genarateTokenAndCookie(newUser._id,res);
-		 res.status(200).json({ 
-			    _id: newUser._id,
-				fullName: newUser.fullName,
-				username: newUser.username,
-				email: newUser.email,
-				followers: newUser.followers,
-				following: newUser.following,
-				profileImg: newUser.profileImg,
-				coverImg: newUser.coverImg,
-		 });
-		
-    } catch( error ){
-      console.log("Error in login controller", error.message);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
+		const isPasswordCorrect = await bcrypt.compare(password,newUser?.password || "")
+		if( !newUser || !isPasswordCorrect){
+		   return res.status(400).json({ error: "Invalid username or password",username,isPasswordCorrect });
+		}
+	   
+		genarateTokenAndCookie(newUser._id,res);
+		res.status(200).json({ 
+			   _id: newUser._id,
+			   fullName: newUser.fullName,
+			   username: newUser.username,
+			   email: newUser.email,
+			   followers: newUser.followers,
+			   following: newUser.following,
+			   profileImg: newUser.profileImg,
+			//    coverImg: newUser.coverImg,
+		});
+	   
+   } catch( error ){
+	 console.log("Error in login controller", error.message);
+	 res.status(500).json({ error: "Internal Server Error" });
+   }
 };
 
 export const logout=async  (req,res)=>{
